@@ -11,7 +11,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-
+import axios from "axios";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import  ChatCompletionRequestMessage  from "openai";
 const ConversationPage = () => {
 const form = useForm<z.infer<typeof fromSchema>>({
     resolver: zodResolver(fromSchema),
@@ -20,10 +23,18 @@ const form = useForm<z.infer<typeof fromSchema>>({
     },
 
 });
-
+const router = useRouter();
 const isLoading = form.formState.isSubmitting;
+const [Messages, setMessages] = useState<ChatCompletionRequestMessage[]>([]);
 const onSubmit = async (values: z.infer<typeof fromSchema>) => {
-    console.log(values);
+    try {
+
+        
+    } catch (error: any) {
+        console.error(error);
+    } finally {
+     router.refresh();
+    }
 }
 
     return (
