@@ -6,7 +6,7 @@ import { Heading } from "@/components/heading";
 import { MessageSquare } from "lucide-react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-import { fromSchema } from "./constants";
+import { formSchema } from "./constants";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
@@ -16,17 +16,27 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import  ChatCompletionRequestMessage  from "openai";
 const ConversationPage = () => {
-const form = useForm<z.infer<typeof fromSchema>>({
-    resolver: zodResolver(fromSchema),
+const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
     defaultValues: {
         prompt: "",
     },
 
 });
+
+interface ChatCompletionRequestMessage {
+  role: string; // 'user' or 'assistant'
+  content: string;
+}
+
+// Then you can use it as previously mentioned
+const [messages, setMessages] = useState<ChatCompletionRequestMessage[]>([]);
+
+
 const router = useRouter();
 const isLoading = form.formState.isSubmitting;
-const [Messages, setMessages] = useState<ChatCompletionRequestMessage[]>([]);
-const onSubmit = async (values: z.infer<typeof fromSchema>) => {
+const Messages = useState<ChatCompletionRequestMessage[]>([]);
+const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
 
         
